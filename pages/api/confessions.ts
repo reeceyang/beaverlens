@@ -1,6 +1,13 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import clientPromise from "../../lib/mongodb";
 
+export interface Confession {
+  _id: string;
+  post_text: string;
+  time: string;
+  post_url: string;
+}
+
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const client = await clientPromise;
