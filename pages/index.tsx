@@ -1,10 +1,10 @@
 import Head from "next/head";
 import clientPromise from "../lib/mongodb";
-import { InferGetServerSidePropsType } from "next";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-export async function getServerSideProps(context) {
+export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
     await clientPromise;
     // `await clientPromise` will use the default database passed in the MONGODB_URI
@@ -25,7 +25,7 @@ export async function getServerSideProps(context) {
       props: { isConnected: false },
     };
   }
-}
+};
 
 export default function Home({
   isConnected,
