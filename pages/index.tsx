@@ -1,9 +1,11 @@
-import Head from "next/head";
 import clientPromise from "../lib/mongodb";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { useRouter } from "next/router";
-import { KeyboardEventHandler, useState } from "react";
+import { useState } from "react";
 import { Confession } from "./api/confessions";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDiscord, faGithub } from "@fortawesome/free-brands-svg-icons";
+import Image from "next/image";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
@@ -27,6 +29,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 };
+
+const BOT_INVITE =
+  "https://discord.com/api/oauth2/authorize?client_id=972229072128204861&permissions=2147485696&scope=bot";
 
 const ConfessionCard = ({ confession }: { confession: Confession }) => {
   const confessionDate = new Date(confession.time);
@@ -81,14 +86,16 @@ export default function Home({
 
   return (
     <>
-      <div className="hero min-h-screen bg-base-200">
+      <div className="hero min-h-[80vh] bg-base-200">
         <div className="hero-content text-center">
           <div className="max-w-5xl">
             <h1 className="text-5xl font-bold">Explore MIT Confessions!</h1>
             <p className="py-6">
-              Browse our archive of over 3,000 MIT Confessions, or add our
-              Discord bot to automatically forward new confessions to your
-              Discord server.
+              Browse our archive of over 3,000 MIT Confessions, or{" "}
+              <a className="link link-hover" href={BOT_INVITE}>
+                add our Discord bot
+              </a>{" "}
+              to automatically forward new confessions to your Discord server.
             </p>
             <input
               placeholder="Search for confessions"
@@ -102,7 +109,7 @@ export default function Home({
               disabled={isLoading}
             ></input>
             <button
-              className={`btn ${isLoading && "loading"} ml-2`}
+              className={`btn btn-primary ${isLoading && "loading"} ml-2`}
               onClick={updateResults}
             >
               Search
@@ -118,6 +125,88 @@ export default function Home({
           </div>
         </div>
       </div>
+
+      <div className="container max-w-5xl p-6">
+        <h1 className="text-5xl font-bold">
+          Forward new confessions to Discord
+        </h1>
+        <div className="flex flex-row flex-wrap-reverse">
+          <div className="max-w-md mr-auto">
+            <p className="py-6">
+              Invite our Discord bot to your server. As soon as new confessions
+              are posted, the bot will post them to the channel of your choice.
+              Perfect for MIT Confessions fans who aren't fans of Facebook!
+            </p>
+            <a href={BOT_INVITE}>
+              <button className="btn btn-primary">Invite</button>
+            </a>
+            <p className="py-6">
+              <a
+                className="link link-primary"
+                href="https://discord.gg/8g3wqgKfmc"
+              >
+                Join the mitconfesssionsbot community Discord server
+              </a>
+            </p>
+          </div>
+          <div className="max-w-md py-6 ml-auto">
+            <div className="chat chat-start">
+              <div className="chat-image avatar">
+                <div className="bg-primary rounded-full p-1">
+                  <FontAwesomeIcon
+                    className="fa-xl translate-y-0.5"
+                    icon={faDiscord}
+                  />
+                </div>
+              </div>
+              <div className="chat-bubble">/getconfess</div>
+            </div>
+            <div className="chat chat-end">
+              <div className="chat-bubble">
+                <p>
+                  <strong>#6969</strong> You should add the mitconfessionsbot to
+                  your Discord Server!
+                </p>
+                <p className="link link-info">
+                  https://www.facebook.com/69696969696969
+                </p>
+              </div>
+              <div className="chat-image avatar">
+                <div className="bg-accent rounded-full p-1">
+                  <FontAwesomeIcon
+                    className="fa-xl translate-y-0.5"
+                    icon={faDiscord}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer className="footer footer-center p-10 bg-base-200 text-base-content rounded">
+        <div className="grid grid-flow-col gap-4">
+          <a className="link link-hover">Search</a>
+          <a className="link link-hover" href={BOT_INVITE}>
+            Bot
+          </a>
+          <a className="cursor-default">Stats (coming soon!)</a>
+          <a className="link link-hover">Source</a>
+        </div>
+        <div>
+          <div className="grid grid-flow-col gap-4">
+            <a className="link transition hover:scale-110">
+              <FontAwesomeIcon className="fa-2xl" icon={faGithub} />
+            </a>
+            <a className="link transition hover:scale-110">
+              <FontAwesomeIcon className="fa-2xl" icon={faDiscord} />
+            </a>
+          </div>
+        </div>
+        <div>
+          <p>Made with ❤️ by Reece</p>
+        </div>
+      </footer>
     </>
   );
 }
