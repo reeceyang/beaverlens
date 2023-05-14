@@ -1,19 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import { Confession } from "./api/search/route";
+import { Confession, SearchRequest } from "./api/search/route";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDiscord, faGithub } from "@fortawesome/free-brands-svg-icons";
 
 export const BOT_INVITE =
   "https://discord.com/api/oauth2/authorize?client_id=972229072128204861&permissions=2147485696&scope=bot";
+export const SERVER_INVITE = "https://discord.gg/8g3wqgKfmc";
 
 const ConfessionCard = ({ confession }: { confession: Confession }) => {
   const confessionDate = new Date(confession.time);
   const confessionNumber = confession.post_text.split(" ")[0];
 
   return (
-    <div className="card w-96 h-64 bg-base-100 shadow-xl text-ellipsis">
+    <div className="card w-96 h-64 bg-base-100 shadow-lg text-ellipsis">
       <div className="card-body">
         <div className="flex flex-row">
           <h2 className="card-title">{confessionNumber}</h2>
@@ -41,18 +42,21 @@ export default function Home() {
   const [results, setResults] = useState<Array<Confession>>([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  const HOME_NUM_RESULTS = "3";
+
   const updateResults = async () => {
+    const searchObj: SearchRequest = {
+      query: searchText,
+      num: HOME_NUM_RESULTS,
+    };
     setIsLoading(true);
     setResults(
-      await fetch(
-        "/api/search?" +
-          new URLSearchParams({
-            search_text: searchText,
-          })
-      ).then((res) => {
-        setIsLoading(false);
-        return res.json();
-      })
+      await fetch("/api/search?" + new URLSearchParams(searchObj)).then(
+        (res) => {
+          setIsLoading(false);
+          return res.json();
+        }
+      )
     );
   };
 
@@ -86,9 +90,9 @@ export default function Home() {
             >
               Search
             </button>
-            <div className="carousel max-w-5xl py-6">
+            <div className="container carousel carousel-center space-x-4 py-6">
               {results.map((result) => (
-                <div className="carousel-item px-2">
+                <div className="carousel-item">
                   <ConfessionCard confession={result} />
                 </div>
               ))}

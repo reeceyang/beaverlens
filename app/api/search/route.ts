@@ -10,11 +10,11 @@ export interface Confession {
   post_url: string;
 }
 
-export interface SearchRequest {
+export type SearchRequest = {
   query: string;
-  fuzzy?: boolean;
-  num?: number;
-}
+  fuzzy?: string;
+  num?: string;
+};
 
 export async function GET(req: NextApiRequest) {
   try {
@@ -25,7 +25,7 @@ export async function GET(req: NextApiRequest) {
     const isFuzzy = searchParams.get("fuzzy") !== "false";
 
     // default to returning 10 confessions, max of 10 confessions
-    const numConfessions = Math.min(Number(searchParams.get("num")) ?? 10, 10);
+    const numConfessions = Math.min(Number(searchParams.get("num") ?? 10), 10);
 
     const client = await clientPromise;
     const db = client.db("Cluster0");

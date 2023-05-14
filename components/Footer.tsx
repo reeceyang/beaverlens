@@ -1,24 +1,38 @@
 import { faGithub, faDiscord } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { BOT_INVITE } from "../app/page";
+import { BOT_INVITE, SERVER_INVITE } from "../app/page";
+import Link from "next/link";
 
 export default function Footer() {
   return (
     <footer className="footer footer-center p-10 bg-base-200 text-base-content rounded">
       <div className="grid grid-flow-col gap-4">
-        <a className="link link-hover">Search</a>
+        <Link href="/" className="link link-hover">
+          Home
+        </Link>
+        <Link href="/search" className="link link-hover">
+          Search
+        </Link>
         <a className="link link-hover" href={BOT_INVITE}>
           Bot
         </a>
         <a className="cursor-default">Stats (coming soon!)</a>
-        <a className="link link-hover">Source</a>
+        <a
+          href="https://github.com/reeceyang/mitconfessionsweb"
+          className="link link-hover"
+        >
+          Source
+        </a>
       </div>
       <div>
         <div className="grid grid-flow-col gap-4">
-          <a className="link transition hover:scale-110">
+          <a
+            href="https://github.com/reeceyang/mitconfessionsweb"
+            className="link transition hover:scale-110"
+          >
             <FontAwesomeIcon className="fa-2xl" icon={faGithub} />
           </a>
-          <a className="link transition hover:scale-110">
+          <a href={SERVER_INVITE} className="link transition hover:scale-110">
             <FontAwesomeIcon className="fa-2xl" icon={faDiscord} />
           </a>
         </div>
