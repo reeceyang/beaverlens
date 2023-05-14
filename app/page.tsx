@@ -1,36 +1,11 @@
-import clientPromise from "../lib/mongodb";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import { useRouter } from "next/router";
+"use client";
+
 import { useState } from "react";
-import { Confession } from "./api/confessions";
+import { Confession } from "./api/search/route";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDiscord, faGithub } from "@fortawesome/free-brands-svg-icons";
-import Image from "next/image";
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  try {
-    await clientPromise;
-    // `await clientPromise` will use the default database passed in the MONGODB_URI
-    // However you can use another database (e.g. myDatabase) by replacing the `await clientPromise` with the following code:
-    //
-    // `const client = await clientPromise`
-    // `const db = client.db("myDatabase")`
-    //
-    // Then you can execute queries against your database like so:
-    // db.find({}) or any of the MongoDB Node Driver commands
-
-    return {
-      props: { isConnected: true },
-    };
-  } catch (e) {
-    console.error(e);
-    return {
-      props: { isConnected: false },
-    };
-  }
-};
-
-const BOT_INVITE =
+export const BOT_INVITE =
   "https://discord.com/api/oauth2/authorize?client_id=972229072128204861&permissions=2147485696&scope=bot";
 
 const ConfessionCard = ({ confession }: { confession: Confession }) => {
@@ -61,10 +36,7 @@ const ConfessionCard = ({ confession }: { confession: Confession }) => {
   );
 };
 
-export default function Home({
-  isConnected,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const router = useRouter();
+export default function Home() {
   const [searchText, setSearchText] = useState("");
   const [results, setResults] = useState<Array<Confession>>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -73,7 +45,7 @@ export default function Home({
     setIsLoading(true);
     setResults(
       await fetch(
-        "/api/confessions?" +
+        "/api/search?" +
           new URLSearchParams({
             search_text: searchText,
           })
@@ -183,30 +155,6 @@ export default function Home({
           </div>
         </div>
       </div>
-
-      <footer className="footer footer-center p-10 bg-base-200 text-base-content rounded">
-        <div className="grid grid-flow-col gap-4">
-          <a className="link link-hover">Search</a>
-          <a className="link link-hover" href={BOT_INVITE}>
-            Bot
-          </a>
-          <a className="cursor-default">Stats (coming soon!)</a>
-          <a className="link link-hover">Source</a>
-        </div>
-        <div>
-          <div className="grid grid-flow-col gap-4">
-            <a className="link transition hover:scale-110">
-              <FontAwesomeIcon className="fa-2xl" icon={faGithub} />
-            </a>
-            <a className="link transition hover:scale-110">
-              <FontAwesomeIcon className="fa-2xl" icon={faDiscord} />
-            </a>
-          </div>
-        </div>
-        <div>
-          <p>Made with ❤️ by Reece</p>
-        </div>
-      </footer>
     </>
   );
 }
