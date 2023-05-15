@@ -98,6 +98,11 @@ export default function Home() {
                 </div>
               ))}
             </div>
+            {results.length > 0 && (
+              <Link href="/search">
+                <button className="btn btn-accent">See more</button>
+              </Link>
+            )}
             <p>
               <Link className="link link-hover" href="/search">
                 Advanced Search
