@@ -1,7 +1,6 @@
-import { NextApiRequest, NextApiResponse } from "next";
 import clientPromise from "../../../lib/mongodb";
 import assert from "assert";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export interface Confession {
   _id: string;
@@ -16,7 +15,7 @@ export type SearchRequest = {
   num?: string;
 };
 
-export async function GET(req: NextApiRequest) {
+export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url ?? assert.fail());
     const searchText = searchParams.get("query") ?? assert.fail();
