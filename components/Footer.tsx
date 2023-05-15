@@ -38,7 +38,12 @@ export default function Footer() {
         </div>
       </div>
       <div>
-        <p>Made with ❤️ by Reece</p>
+        <p>
+          Made with 🧐 by{" "}
+          <a className="link link-hover" href="https://www.reeceyang.xyz/">
+            Reece
+          </a>
+        </p>
       </div>
     </footer>
   );

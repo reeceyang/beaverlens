@@ -4,12 +4,13 @@ import { useState } from "react";
 import { Confession, SearchRequest } from "./api/search/route";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDiscord, faGithub } from "@fortawesome/free-brands-svg-icons";
+import Link from "next/link";
 
 export const BOT_INVITE =
   "https://discord.com/api/oauth2/authorize?client_id=972229072128204861&permissions=2147485696&scope=bot";
 export const SERVER_INVITE = "https://discord.gg/8g3wqgKfmc";
 
-const ConfessionCard = ({ confession }: { confession: Confession }) => {
+export const ConfessionCard = ({ confession }: { confession: Confession }) => {
   const confessionDate = new Date(confession.time);
   const confessionNumber = confession.post_text.split(" ")[0];
 
@@ -97,7 +98,11 @@ export default function Home() {
                 </div>
               ))}
             </div>
-            <p>Advanced Options</p>
+            <p>
+              <Link className="link link-hover" href="/search">
+                Advanced Search
+              </Link>
+            </p>
           </div>
         </div>
       </div>
