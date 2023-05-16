@@ -10,24 +10,45 @@ export const BOT_INVITE =
   "https://discord.com/api/oauth2/authorize?client_id=972229072128204861&permissions=2147485696&scope=bot";
 export const SERVER_INVITE = "https://discord.gg/8g3wqgKfmc";
 
-export const ConfessionCard = ({ confession }: { confession: Confession }) => {
+export const ConfessionCard = ({
+  confession,
+  onHomePage,
+}: {
+  confession: Confession;
+  onHomePage: boolean;
+}) => {
   const confessionDate = new Date(confession.time);
   const confessionNumber = confession.post_text.split(" ")[0];
 
   return (
-    <div className="card w-96 h-64 bg-base-100 shadow-lg text-ellipsis">
+    <div
+      className={`card ${
+        onHomePage && "w-96 h-64"
+      } bg-base-100 shadow-lg text-ellipsis`}
+    >
       <div className="card-body">
         <div className="flex flex-row">
           <h2 className="card-title">{confessionNumber}</h2>
           <span className="ml-auto">
-            {confessionDate.toLocaleDateString()},&nbsp;
+            {confessionDate.toLocaleDateString([], {
+              day: "numeric",
+              month: "numeric",
+              year: "2-digit",
+            })}
+            ,&nbsp;
             {confessionDate.toLocaleTimeString([], {
               hour: "numeric",
               minute: "2-digit",
             })}
           </span>
         </div>
-        <p className="block h-32 overflow-auto">{confession.post_text}</p>
+        <p
+          className={`block ${
+            onHomePage && "h-32"
+          } overflow-auto whitespace-pre-wrap`}
+        >
+          {confession.post_text}
+        </p>
         <p>
           <a className="link" href={confession.post_url}>
             View on Facebook
@@ -63,11 +84,11 @@ export default function Home() {
 
   return (
     <>
-      <div className="hero min-h-[80vh] bg-base-200">
+      <div className="hero min-h-[80vh]">
         <div className="hero-content text-center">
           <div className="max-w-5xl">
             <h1 className="text-5xl font-bold">Explore MIT Confessions!</h1>
-            <p className="py-6">
+            <p className="py-6 max-w-xl">
               Browse our archive of over 3,000 MIT Confessions, or{" "}
               <a className="link link-hover" href={BOT_INVITE}>
                 add our Discord bot
@@ -84,30 +105,34 @@ export default function Home() {
               }}
               onChange={(event) => setSearchText(event.target.value)}
               disabled={isLoading}
+              autoFocus
             ></input>
             <button
-              className={`btn btn-primary ${isLoading && "loading"} ml-2`}
+              className={`btn btn-primary ${isLoading && "loading"} ml-2 mt-2`}
               onClick={updateResults}
             >
               Search
             </button>
-            <div className="container carousel carousel-center space-x-4 py-6">
+            <div className="container carousel space-x-4 py-6">
               {results.map((result) => (
                 <div className="carousel-item">
-                  <ConfessionCard confession={result} />
+                  <ConfessionCard confession={result} onHomePage={true} />
                 </div>
               ))}
             </div>
-            {results.length > 0 && (
-              <Link href="/search">
-                <button className="btn btn-accent">See more</button>
+            {results.length > 0 ? (
+              <Link
+                href={"/search?" + new URLSearchParams({ query: searchText })}
+              >
+                <button className="btn btn-secondary">See more</button>
               </Link>
+            ) : (
+              <p>
+                <Link className="link link-hover" href="/search">
+                  Advanced Search
+                </Link>
+              </p>
             )}
-            <p>
-              <Link className="link link-hover" href="/search">
-                Advanced Search
-              </Link>
-            </p>
           </div>
         </div>
       </div>
@@ -127,13 +152,12 @@ export default function Home() {
               <button className="btn btn-primary">Invite</button>
             </a>
             <p className="py-6">
-              <a
-                className="link link-primary"
-                href="https://discord.gg/8g3wqgKfmc"
-              >
-                Join the mitconfesssionsbot community Discord server
-              </a>
+              Join the mitconfesssionsbot community Discord server for support
+              and feature requests.
             </p>
+            <a href="https://discord.gg/8g3wqgKfmc">
+              <button className="btn btn-accent">Join</button>
+            </a>
           </div>
           <div className="max-w-md py-6 ml-auto">
             <div className="chat chat-start">
@@ -153,7 +177,7 @@ export default function Home() {
                   <strong>#6969</strong> You should add the mitconfessionsbot to
                   your Discord Server!
                 </p>
-                <p className="link link-info">
+                <p className="link link-info break-words">
                   https://www.facebook.com/69696969696969
                 </p>
               </div>

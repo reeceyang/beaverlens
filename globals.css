@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.hero {
+  background-color:#ffd599;
+  background-image:
+  radial-gradient(at 43% 98%, hsla(73,66%,79%,1) 0px, transparent 50%),
+  radial-gradient(at 30% 71%, hsla(179,74%,77%,1) 0px, transparent 50%),
+  radial-gradient(at 83% 66%, hsla(54,96%,69%,1) 0px, transparent 50%),
+  radial-gradient(at 19% 47%, hsla(340,90%,73%,1) 0px, transparent 50%),
+  radial-gradient(at 36% 15%, hsla(303,95%,78%,1) 0px, transparent 50%),
+  radial-gradient(at 56% 90%, hsla(169,89%,75%,1) 0px, transparent 50%),
+  radial-gradient(at 86% 41%, hsla(296,78%,71%,1) 0px, transparent 50%);}
