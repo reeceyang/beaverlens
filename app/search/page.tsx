@@ -13,7 +13,7 @@ export default function Search() {
   // https://stackoverflow.com/a/72672732
   useEffect(
     () => {
-      // Wait 1000ms before copying the value of tempValue into value;
+      // Wait 200ms before copying the value of tempValue into value;
       const timeout = setTimeout(() => {
         updateResults();
       }, 200);
@@ -23,7 +23,7 @@ export default function Search() {
       return () => clearTimeout(timeout);
     },
     // Run the hook every time the user makes a keystroke
-    [searchText]
+    [searchText, isFuzzy]
   );
 
   useEffect(() => {
@@ -79,6 +79,7 @@ export default function Search() {
         </label>
       </div>
       <div className="container min-h-screen py-6">
+        {isLoading && <button className={`btn btn-ghost loading`}></button>}
         {results.length > 0 ? (
           results.map((result) => (
             <div className="py-2">
@@ -87,12 +88,6 @@ export default function Search() {
           ))
         ) : (
           <p>no confessions :( try a different search?</p>
-        )}
-        {isLoading && (
-          <button
-            className={`btn btn-ghost loading ml-2`}
-            onClick={updateResults}
-          ></button>
         )}
       </div>
     </div>
