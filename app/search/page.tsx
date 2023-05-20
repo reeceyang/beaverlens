@@ -101,7 +101,7 @@ export default function Search() {
             }
           >
             {Object.values(SortOption).map((option) => (
-              <option>{option}</option>
+              <option key={option}>{option}</option>
             ))}
           </select>
         </div>
@@ -115,7 +115,7 @@ export default function Search() {
         )}
         {results.length > 0 ? (
           results.map((result) => (
-            <div className="py-2">
+            <div className="py-2" key={result._id}>
               <ConfessionCard confession={result} onHomePage={false} />
             </div>
           ))

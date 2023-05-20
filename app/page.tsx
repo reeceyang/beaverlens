@@ -119,7 +119,7 @@ export default function Home() {
             </button>
             <div className="container carousel space-x-4 py-6">
               {results.map((result) => (
-                <div className="carousel-item">
+                <div className="carousel-item" key={result._id}>
                   <ConfessionCard confession={result} onHomePage={true} />
                 </div>
               ))}
