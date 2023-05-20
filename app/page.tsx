@@ -5,6 +5,7 @@ import { Confession, SearchRequest } from "./api/search/route";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDiscord, faGithub } from "@fortawesome/free-brands-svg-icons";
 import Link from "next/link";
+import { SortOption } from "./types";
 
 export const BOT_INVITE =
   "https://discord.com/api/oauth2/authorize?client_id=972229072128204861&permissions=2147485696&scope=bot";
@@ -70,15 +71,18 @@ export default function Home() {
     const searchObj: SearchRequest = {
       query: searchText,
       num: HOME_NUM_RESULTS,
+      sort: SortOption.NONE,
     };
     setIsLoading(true);
     setResults(
-      await fetch("/api/search?" + new URLSearchParams(searchObj)).then(
-        (res) => {
-          setIsLoading(false);
-          return res.json();
-        }
-      )
+      (
+        await fetch("/api/search?" + new URLSearchParams(searchObj)).then(
+          (res) => {
+            setIsLoading(false);
+            return res.json();
+          }
+        )
+      ).confessions
     );
   };
 
@@ -88,7 +92,7 @@ export default function Home() {
         <div className="hero-content text-center">
           <div className="max-w-5xl">
             <h1 className="text-5xl font-bold">Explore MIT Confessions!</h1>
-            <p className="py-6 max-w-xl">
+            <p className="py-6 max-w-xl m-auto">
               Browse our archive of over 3,000 MIT Confessions, or{" "}
               <a className="link link-hover" href={BOT_INVITE}>
                 add our Discord bot

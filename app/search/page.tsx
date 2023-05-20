@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Confession, SearchRequest, SearchResponse } from "../api/search/route";
 import { ConfessionCard } from "../page";
+import { SortOption } from "../types";
 
 export default function Search() {
   const [searchText, setSearchText] = useState("");
@@ -10,6 +11,7 @@ export default function Search() {
   const [totalNum, setTotalNum] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [isFuzzy, setIsFuzzy] = useState(true);
+  const [sortOption, setSortOption] = useState<SortOption>(SortOption.NONE);
 
   // https://stackoverflow.com/a/72672732
   useEffect(
@@ -24,7 +26,7 @@ export default function Search() {
       return () => clearTimeout(timeout);
     },
     // Run the hook every time the user makes a keystroke
-    [searchText, isFuzzy]
+    [searchText, isFuzzy, sortOption]
   );
 
   useEffect(() => {
@@ -37,6 +39,7 @@ export default function Search() {
     const searchObj: SearchRequest = {
       query: searchText,
       fuzzy: String(isFuzzy),
+      sort: sortOption,
     };
     const url = "/api/search?" + new URLSearchParams(searchObj);
     setIsLoading(true);
@@ -65,16 +68,33 @@ export default function Search() {
           autoFocus
         ></input>
       </div>
-      <div className="form-control">
-        <label className="label cursor-pointer">
-          <span className="label-text">Use fuzzy search</span>
-          <input
-            type="checkbox"
-            checked={isFuzzy}
-            className="checkbox checkbox-primary"
-            onChange={() => setIsFuzzy(!isFuzzy)}
-          />
-        </label>
+      <div className="grid grid-cols-2 my-2">
+        <div className="form-control">
+          <label className="label cursor-pointer m-auto">
+            <span className="label-text">Use fuzzy search</span>
+            <input
+              type="checkbox"
+              checked={isFuzzy}
+              className="checkbox checkbox-primary ml-2"
+              onChange={() => setIsFuzzy(!isFuzzy)}
+            />
+          </label>
+        </div>
+
+        <div className="flex flex-row">
+          <span className="label-text my-auto ml-auto mr-2">Sort:</span>
+          <select
+            className="select select-primary max-w-xs flex-grow"
+            value={sortOption}
+            onChange={(event) =>
+              setSortOption(event.target.value as SortOption)
+            }
+          >
+            {Object.values(SortOption).map((option) => (
+              <option>{option}</option>
+            ))}
+          </select>
+        </div>
       </div>
       <div className="container min-h-screen py-6">
         {isLoading && <button className={`btn btn-ghost loading`}></button>}

@@ -1,6 +1,7 @@
 import clientPromise from "../../../lib/mongodb";
 import assert from "assert";
 import { NextRequest, NextResponse } from "next/server";
+import { SortOption } from "../../types";
 
 export interface Confession {
   _id: string;
@@ -14,18 +15,12 @@ export interface SearchResponse {
   total_num: number;
 }
 
-export enum SortOption {
-  NONE = "none",
-  TIME_ASC = "time_asc",
-  TIME_DESC = "time_desc",
-}
-
 export type SearchRequest = {
   query: string;
   fuzzy?: string;
   num?: string;
   page?: string;
-  sort?: SortOption;
+  sort: SortOption;
 };
 
 export const CONFESSIONS_PER_PAGE = 10;
@@ -40,28 +35,24 @@ export async function GET(req: NextRequest) {
     const isFuzzy = searchParams.get("fuzzy") !== "false";
 
     const META_SORT_OPTION = { $meta: "textScore" };
+    const sortParam = searchParams.get("sort") ?? assert.fail();
     let sortOption;
-    if (searchParams.get("sort") === null) {
-      if (!isSearch) {
-        // show most recent confessions in descending time order
-        sortOption = -1;
-      } else {
-        sortOption = META_SORT_OPTION;
-      }
-    } else {
-      switch (searchParams.get("sort")) {
-        case SortOption.NONE:
+    switch (sortParam) {
+      case SortOption.NONE:
+        if (isSearch) {
           sortOption = META_SORT_OPTION;
-          break;
-        case SortOption.TIME_ASC:
-          sortOption = 1;
-          break;
-        case SortOption.TIME_DESC:
+        } else {
           sortOption = -1;
-          break;
-        default:
-          assert.fail();
-      }
+        }
+        break;
+      case SortOption.TIME_ASC:
+        sortOption = 1;
+        break;
+      case SortOption.TIME_DESC:
+        sortOption = -1;
+        break;
+      default:
+        assert.fail();
     }
 
     // default to first page
