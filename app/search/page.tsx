@@ -22,6 +22,7 @@ export default function Search() {
     () => {
       // Wait 200ms before copying the value of tempValue into value;
       const timeout = setTimeout(() => {
+        setPage(0);
         updateResults();
       }, 200);
 
@@ -30,8 +31,12 @@ export default function Search() {
       return () => clearTimeout(timeout);
     },
     // Run the hook every time the user makes a keystroke
-    [searchText, isFuzzy, sortOption, page]
+    [searchText, isFuzzy, sortOption]
   );
+
+  useEffect(() => {
+    updateResults();
+  }, [page]);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
