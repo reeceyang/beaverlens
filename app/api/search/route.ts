@@ -9,22 +9,69 @@ export interface Confession {
   post_url: string;
 }
 
+export interface SearchResponse {
+  confessions: Array<Confession>;
+  total_num: number;
+}
+
+export enum SortOption {
+  NONE = "none",
+  TIME_ASC = "time_asc",
+  TIME_DESC = "time_desc",
+}
+
 export type SearchRequest = {
   query: string;
   fuzzy?: string;
   num?: string;
+  page?: string;
+  sort?: SortOption;
 };
+
+export const CONFESSIONS_PER_PAGE = 10;
 
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url ?? assert.fail());
     const searchText = searchParams.get("query") ?? assert.fail();
+    const isSearch = searchText !== "";
 
     // default to fuzzy search
     const isFuzzy = searchParams.get("fuzzy") !== "false";
 
+    const META_SORT_OPTION = { $meta: "textScore" };
+    let sortOption;
+    if (searchParams.get("sort") === null) {
+      if (!isSearch) {
+        // show most recent confessions in descending time order
+        sortOption = -1;
+      } else {
+        sortOption = META_SORT_OPTION;
+      }
+    } else {
+      switch (searchParams.get("sort")) {
+        case SortOption.NONE:
+          sortOption = META_SORT_OPTION;
+          break;
+        case SortOption.TIME_ASC:
+          sortOption = 1;
+          break;
+        case SortOption.TIME_DESC:
+          sortOption = -1;
+          break;
+        default:
+          assert.fail();
+      }
+    }
+
+    // default to first page
+    const page = Number(searchParams.get("page") ?? "0");
+
     // default to returning 10 confessions, max of 10 confessions
-    const numConfessions = Math.min(Number(searchParams.get("num") ?? 10), 10);
+    const numConfessions = Math.min(
+      Number(searchParams.get("num") ?? CONFESSIONS_PER_PAGE),
+      CONFESSIONS_PER_PAGE
+    );
 
     const client = await clientPromise;
     const db = client.db("Cluster0");
@@ -41,6 +88,15 @@ export async function GET(req: NextRequest) {
         },
       },
     };
+    const sort = {
+      $sort: { time: sortOption },
+    };
+    const skip = {
+      $skip: page * CONFESSIONS_PER_PAGE,
+    };
+    const limit = {
+      $limit: Math.min(numConfessions, CONFESSIONS_PER_PAGE),
+    };
     const projection = {
       $project: {
         post_text: 1,
@@ -48,14 +104,44 @@ export async function GET(req: NextRequest) {
         post_url: 1,
       },
     };
+    const facet = {
+      $facet: {
+        confessions: [],
+        ...(isSearch && {
+          meta: [
+            {
+              $replaceWith: "$$SEARCH_META",
+            },
+            {
+              $limit: 1,
+            },
+          ],
+        }),
+      },
+    };
 
-    const confessions = await db
+    const dbResponse = await db
       .collection("confessions")
-      .aggregate([searcher_aggregate, projection])
-      .limit(numConfessions)
+      .aggregate([
+        // only search if search text is nonempty
+        ...(isSearch ? [searcher_aggregate] : []),
+        projection,
+        sort,
+        skip,
+        limit,
+        facet,
+      ])
       .toArray();
 
-    return NextResponse.json(confessions);
+    const { confessions } = dbResponse[0];
+    const total_num = isSearch
+      ? dbResponse[0].meta[0]?.count?.lowerBound ?? 0 // FIXME: not typesafe
+      : await db.collection("confessions").countDocuments();
+    const response: SearchResponse = {
+      confessions,
+      total_num,
+    };
+    return NextResponse.json(response);
   } catch (e) {
     console.error(e);
   }

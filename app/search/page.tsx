@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Confession, SearchRequest } from "../api/search/route";
+import { Confession, SearchRequest, SearchResponse } from "../api/search/route";
 import { ConfessionCard } from "../page";
 
 export default function Search() {
   const [searchText, setSearchText] = useState("");
   const [results, setResults] = useState<Array<Confession>>([]);
+  const [totalNum, setTotalNum] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [isFuzzy, setIsFuzzy] = useState(true);
 
@@ -37,17 +38,14 @@ export default function Search() {
       query: searchText,
       fuzzy: String(isFuzzy),
     };
-    const url =
-      searchText !== ""
-        ? "/api/search?" + new URLSearchParams(searchObj)
-        : "/api/recent";
+    const url = "/api/search?" + new URLSearchParams(searchObj);
     setIsLoading(true);
-    setResults(
-      await fetch(url).then((res) => {
-        setIsLoading(false);
-        return res.json();
-      })
-    );
+    const results: SearchResponse = await fetch(url).then((res) => {
+      setIsLoading(false);
+      return res.json();
+    });
+    setResults(results.confessions);
+    setTotalNum(results.total_num);
   };
 
   return (
@@ -80,6 +78,11 @@ export default function Search() {
       </div>
       <div className="container min-h-screen py-6">
         {isLoading && <button className={`btn btn-ghost loading`}></button>}
+        {results.length > 0 && (
+          <p>
+            {totalNum} confession{totalNum > 1 && "s"} found
+          </p>
+        )}
         {results.length > 0 ? (
           results.map((result) => (
             <div className="py-2">
