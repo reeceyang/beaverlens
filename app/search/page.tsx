@@ -3,7 +3,9 @@
 import { useEffect, useState } from "react";
 import { Confession, SearchRequest, SearchResponse } from "../api/search/route";
 import { ConfessionCard } from "../page";
-import { SortOption } from "../types";
+import { CONFESSIONS_PER_PAGE, SortOption } from "../types";
+
+const Spinner = <button className={`btn btn-ghost loading`}></button>;
 
 export default function Search() {
   const [searchText, setSearchText] = useState("");
@@ -12,6 +14,8 @@ export default function Search() {
   const [isLoading, setIsLoading] = useState(false);
   const [isFuzzy, setIsFuzzy] = useState(true);
   const [sortOption, setSortOption] = useState<SortOption>(SortOption.NONE);
+  const [page, setPage] = useState(0);
+  const lastPage = Math.ceil(totalNum / CONFESSIONS_PER_PAGE) - 1;
 
   // https://stackoverflow.com/a/72672732
   useEffect(
@@ -26,7 +30,7 @@ export default function Search() {
       return () => clearTimeout(timeout);
     },
     // Run the hook every time the user makes a keystroke
-    [searchText, isFuzzy, sortOption]
+    [searchText, isFuzzy, sortOption, page]
   );
 
   useEffect(() => {
@@ -40,6 +44,7 @@ export default function Search() {
       query: searchText,
       fuzzy: String(isFuzzy),
       sort: sortOption,
+      page: String(page),
     };
     const url = "/api/search?" + new URLSearchParams(searchObj);
     setIsLoading(true);
@@ -97,7 +102,7 @@ export default function Search() {
         </div>
       </div>
       <div className="container min-h-screen py-6">
-        {isLoading && <button className={`btn btn-ghost loading`}></button>}
+        {isLoading && Spinner}
         {results.length > 0 && (
           <p>
             {totalNum} confession{totalNum > 1 && "s"} found
@@ -111,6 +116,62 @@ export default function Search() {
           ))
         ) : (
           <p>no confessions :( try a different search?</p>
+        )}
+      </div>
+      <div className="m-auto w-fit py-2">
+        {isLoading && Spinner}
+        <button
+          className="btn btn-accent"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        >
+          Back to top
+        </button>
+      </div>
+      {/* go to page 1 or go back one page*/}
+      <div className="m-auto w-fit py-2">
+        {page + 1 !== 1 && (
+          <>
+            <button className="btn btn-outline mx-1" onClick={() => setPage(0)}>
+              1
+            </button>
+            {/* don't show the arrow if the first page is immediately before */}
+            {page + 1 !== 2 && (
+              <>
+                <span>•••</span>
+                <button
+                  className="btn btn-outline mx-1"
+                  onClick={() => setPage(page - 1)}
+                >
+                  ◀
+                </button>
+              </>
+            )}
+          </>
+        )}
+        {/* current page */}
+        <button className="btn btn-primary mx-1">{page + 1}</button>
+        {/* go to last page or go forward one page*/}
+        {page !== lastPage && (
+          <>
+            {/* don't show the arrow if the last page is next */}
+            {page !== lastPage - 1 && (
+              <>
+                <button
+                  className="btn btn-outline mx-1"
+                  onClick={() => setPage(page + 1)}
+                >
+                  ▶
+                </button>
+                <span>•••</span>
+              </>
+            )}
+            <button
+              className="btn btn-outline mx-1"
+              onClick={() => setPage(lastPage)}
+            >
+              {lastPage + 1}
+            </button>
+          </>
         )}
       </div>
     </div>

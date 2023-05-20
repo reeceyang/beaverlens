@@ -1,7 +1,7 @@
 import clientPromise from "../../../lib/mongodb";
 import assert from "assert";
 import { NextRequest, NextResponse } from "next/server";
-import { SortOption } from "../../types";
+import { CONFESSIONS_PER_PAGE, SortOption } from "../../types";
 
 export interface Confession {
   _id: string;
@@ -22,8 +22,6 @@ export type SearchRequest = {
   page?: string;
   sort: SortOption;
 };
-
-export const CONFESSIONS_PER_PAGE = 10;
 
 export async function GET(req: NextRequest) {
   try {
