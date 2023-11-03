@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { Confession, SearchRequest, SearchResponse } from "../api/search/route";
-import { ConfessionCard } from "../page";
 import { CONFESSIONS_PER_PAGE, SortOption } from "../types";
+import ConfessionCard from "../../components/ConfessionCard";
 
 const Spinner = <button className={`btn btn-ghost loading`}></button>;
 
