@@ -5,7 +5,7 @@ import { Confession, SearchRequest, SearchResponse } from "../api/search/route";
 import { CONFESSIONS_PER_PAGE, SortOption } from "../types";
 import ConfessionCard from "../../components/ConfessionCard";
 
-const Spinner = <button className={`btn btn-ghost loading`}></button>;
+const Spinner = () => <button className={`btn btn-ghost loading`} />;
 
 export default function Search() {
   const [searchText, setSearchText] = useState("");
@@ -107,7 +107,7 @@ export default function Search() {
         </div>
       </div>
       <div className="container min-h-screen py-6">
-        {isLoading && Spinner}
+        {isLoading && <Spinner />}
         {results.length > 0 && (
           <p>
             {totalNum} confession{totalNum > 1 && "s"} found
@@ -124,7 +124,7 @@ export default function Search() {
         )}
       </div>
       <div className="m-auto w-fit py-2">
-        {isLoading && Spinner}
+        {isLoading && <Spinner />}
         <button
           className="btn btn-accent"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
