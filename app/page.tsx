@@ -113,56 +113,61 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="container max-w-5xl p-6">
-        <h1 className="text-5xl font-bold">
-          Forward new confessions to Discord
-        </h1>
-        <div className="flex flex-row flex-wrap-reverse">
-          <div className="max-w-md mr-auto">
-            <p className="py-6">
-              Invite our Discord bot to your server. As soon as new confessions
-              are posted, the bot will post them to the channel of your choice.
-              Perfect for MIT Confessions fans who aren't fans of Facebook!
-            </p>
-            <a href={BOT_INVITE}>
-              <button className="btn btn-primary">Invite</button>
-            </a>
-            <p className="py-6">
-              Join the mitconfesssionsbot community Discord server for support
-              and feature requests.
-            </p>
-            <a href="https://discord.gg/8g3wqgKfmc">
-              <button className="btn btn-accent">Join</button>
-            </a>
-          </div>
-          <div className="max-w-md py-6 ml-auto">
-            <div className="chat chat-start">
-              <div className="chat-image avatar">
-                <div className="bg-primary rounded-full p-1">
-                  <FontAwesomeIcon
-                    className="fa-xl translate-y-0.5"
-                    icon={faDiscord}
-                  />
+      <div className="pattern-bg">
+        <div className="bg-[#ffffffcc]">
+          <div className="container max-w-5xl px-6 py-12">
+            <h1 className="text-5xl font-bold">
+              Forward new confessions to Discord
+            </h1>
+            <div className="flex flex-row flex-wrap-reverse">
+              <div className="max-w-md mr-auto">
+                <p className="py-6">
+                  Invite our Discord bot to your server. As soon as new
+                  confessions are posted, the bot will post them to the channel
+                  of your choice. Perfect for MIT Confessions fans who aren't
+                  fans of Facebook!
+                </p>
+                <a href={BOT_INVITE}>
+                  <button className="btn btn-primary">Invite</button>
+                </a>
+                <p className="py-6">
+                  Join the mitconfesssionsbot community Discord server for
+                  support and feature requests.
+                </p>
+                <a href="https://discord.gg/8g3wqgKfmc">
+                  <button className="btn btn-accent">Join</button>
+                </a>
+              </div>
+              <div className="max-w-md py-6 ml-auto">
+                <div className="chat chat-start">
+                  <div className="chat-image avatar">
+                    <div className="bg-primary rounded-full p-1">
+                      <FontAwesomeIcon
+                        className="fa-xl translate-y-0.5"
+                        icon={faDiscord}
+                      />
+                    </div>
+                  </div>
+                  <div className="chat-bubble">/getconfess</div>
                 </div>
-              </div>
-              <div className="chat-bubble">/getconfess</div>
-            </div>
-            <div className="chat chat-end">
-              <div className="chat-bubble">
-                <p>
-                  <strong>#6969</strong> You should add the mitconfessionsbot to
-                  your Discord Server!
-                </p>
-                <p className="link link-info break-words">
-                  https://www.facebook.com/69696969696969
-                </p>
-              </div>
-              <div className="chat-image avatar">
-                <div className="bg-accent rounded-full p-1">
-                  <FontAwesomeIcon
-                    className="fa-xl translate-y-0.5"
-                    icon={faDiscord}
-                  />
+                <div className="chat chat-end">
+                  <div className="chat-bubble">
+                    <p>
+                      <strong>#6969</strong> You should add the
+                      mitconfessionsbot to your Discord Server!
+                    </p>
+                    <p className="link link-info break-words">
+                      https://www.facebook.com/69696969696969
+                    </p>
+                  </div>
+                  <div className="chat-image avatar">
+                    <div className="bg-accent rounded-full p-1">
+                      <FontAwesomeIcon
+                        className="fa-xl translate-y-0.5"
+                        icon={faDiscord}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
