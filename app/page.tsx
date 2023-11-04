@@ -133,7 +133,7 @@ export default function Home() {
                   <button className="btn btn-primary">Invite</button>
                 </a>
                 <p className="py-6">
-                  Join the mitconfesssionsbot community Discord server for
+                  Join the Beaver Lens community Discord server for
                   support and feature requests.
                 </p>
                 <a href="https://discord.gg/8g3wqgKfmc">
@@ -164,7 +164,7 @@ export default function Home() {
                   <div className="chat-bubble">
                     <p>
                       <strong>#6969</strong> You should add the
-                      mitconfessionsbot to your Discord Server!
+                      Beaver Lens bot to your Discord Server!
                     </p>
                     <p className="link link-info break-words">
                       https://www.facebook.com/69696969696969
