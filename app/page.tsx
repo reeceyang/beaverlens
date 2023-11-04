@@ -57,11 +57,9 @@ export default function Home() {
           <div className="max-w-5xl">
             <h1 className="text-5xl font-bold">Explore MIT Confessions!</h1>
             <p className="py-6 max-w-xl m-auto">
-              Browse our archive of over 3,000 MIT Confessions, or{" "}
-              <a className="link link-hover" href={BOT_INVITE}>
-                add our Discord bot
-              </a>{" "}
-              to automatically forward new confessions to your Discord server.
+              Browse our archive of over 3,000 MIT Confessions, or add our
+              Discord bot to automatically forward new confessions to your
+              Discord server.
             </p>
             <input
               placeholder="Search for confessions"
@@ -84,10 +82,10 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="container max-w-5xl p-6 flex flex-row">
+      <div className="container max-w-5xl p-6 flex flex-row flex-wrap">
         <h1 className="text-5xl font-bold">Recent confessions</h1>
         {results.length > 0 && (
-          <p className="mt-auto ml-auto">
+          <p className="mt-auto sm:ml-auto">
             Updated {formatDistanceToNow(new Date(results[0].time))} ago
           </p>
         )}
