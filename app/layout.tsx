@@ -9,6 +9,23 @@ import Header from "../components/Header";
 
 export const metadata: Metadata = {
   title: "Beaver Lens",
+  description: "Explore an archive of over 5,000 MIT Confessions.",
+  metadataBase: new URL("https://beaverlens.reeceyang.xyz/"),
+  openGraph: {
+    title: "Beaver Lens",
+    description: "Explore an archive of over 5,000 MIT Confessions.",
+    url: "/",
+    siteName: "Beaver Lens",
+    images: [
+      {
+        url: "/android-chrome-512x512.png",
+        width: 512,
+        height: 512,
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
@@ -18,26 +35,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        <link
-          rel="apple-touch-icon"
-          sizes="180x180"
-          href="/apple-touch-icon.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="32x32"
-          href="/favicon-32x32.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="16x16"
-          href="/favicon-16x16.png"
-        />
-        <link rel="manifest" href="/site.webmanifest" />
-      </head>
       <body className="overflow-x-clip">
         <Header />
         {children}
