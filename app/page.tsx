@@ -8,6 +8,7 @@ import Link from "next/link";
 import { SortOption } from "./types";
 import ConfessionCard from "../components/ConfessionCard";
 import { useRouter } from "next/navigation";
+import { formatDistanceToNow } from "date-fns";
 
 export const BOT_INVITE =
   "https://discord.com/api/oauth2/authorize?client_id=972229072128204861&permissions=2147485696&scope=bot";
@@ -87,7 +88,7 @@ export default function Home() {
         <h1 className="text-5xl font-bold">Recent confessions</h1>
         {results.length > 0 && (
           <p className="mt-auto ml-auto">
-            Updated {new Date(results[0].time).toLocaleDateString()}
+            Updated {formatDistanceToNow(new Date(results[0].time))} ago
           </p>
         )}
       </div>
