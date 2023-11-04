@@ -16,13 +16,6 @@ export const metadata: Metadata = {
     description: "Explore an archive of over 5,000 MIT Confessions.",
     url: "/",
     siteName: "Beaver Lens",
-    images: [
-      {
-        url: "/android-chrome-512x512.png",
-        width: 512,
-        height: 512,
-      },
-    ],
     locale: "en_US",
     type: "website",
   },
