@@ -1,27 +1,10 @@
 import clientPromise from "../../../lib/mongodb";
 import assert from "assert";
 import { NextRequest, NextResponse } from "next/server";
-import { CONFESSIONS_PER_PAGE, SortOption } from "../../types";
+import { CONFESSIONS_PER_PAGE, SearchResponse, SortOption } from "../../types";
 
-export interface Confession {
-  _id: string;
-  post_text: string;
-  time: string;
-  post_url: string;
-}
-
-export interface SearchResponse {
-  confessions: Array<Confession>;
-  total_num: number;
-}
-
-export type SearchRequest = {
-  query: string;
-  fuzzy?: string;
-  num?: string;
-  page?: string;
-  sort: SortOption;
-};
+// https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config
+export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
   try {

@@ -1,11 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Confession, SearchRequest } from "./api/search/route";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDiscord, faGithub } from "@fortawesome/free-brands-svg-icons";
 import Link from "next/link";
-import { SortOption } from "./types";
+import { Confession, SearchRequest, SortOption } from "./types";
 import ConfessionCard from "../components/ConfessionCard";
 import { useRouter } from "next/navigation";
 import { formatDistanceToNow } from "date-fns";

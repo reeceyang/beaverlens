@@ -1,4 +1,4 @@
-import { Confession } from "../app/api/search/route";
+import { Confession } from "../app/types";
 
 const ConfessionCard = ({
   confession,
