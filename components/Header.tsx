@@ -12,8 +12,10 @@ const Header = () => (
       <ul className="menu menu-horizontal px-1">
         <li>
           <Link href="/search">Search</Link>
-          <Link href={BOT_INVITE}>Discord Bot 
+          <Link href={BOT_INVITE} className="hidden sm:flex">Discord Bot 
             <FontAwesomeIcon className="fa-md" icon={faArrowUpRightFromSquare} />
+          </Link>
+          <Link href={BOT_INVITE} className="sm:hidden">Bot 
           </Link>
         </li>
       </ul>
