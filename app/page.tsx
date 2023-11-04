@@ -52,7 +52,7 @@ export default function Home() {
 
   return (
     <>
-      <div className="hero min-h-[80vh]">
+      <div className="hero min-h-[70vh]">
         <div className="hero-content text-center">
           <div className="max-w-5xl">
             <h1 className="text-5xl font-bold">Explore MIT Confessions!</h1>

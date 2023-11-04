@@ -63,7 +63,7 @@ export default function Search() {
 
   return (
     <div className="container px-4">
-      <h1 className="text-5xl font-bold py-6">Explore MIT Confessions!</h1>
+      <h1 className="text-5xl font-bold py-6">Search MIT Confessions</h1>
       <div className="flex flex-row">
         <input
           placeholder="Search for confessions"

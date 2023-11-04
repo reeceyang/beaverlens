@@ -5,6 +5,7 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 config.autoAddCss = false;
 
 import Footer from "../components/Footer";
+import Header from "../components/Header";
 
 export default function RootLayout({
   children,
@@ -14,6 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="overflow-x-clip">
+        <Header />
         {children}
         <Footer />
       </body>
