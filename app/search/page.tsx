@@ -132,49 +132,48 @@ export default function Search() {
           Back to top
         </button>
       </div>
+
       {/* go to page 1 or go back one page*/}
       <div className="m-auto w-fit py-2">
-        {page + 1 !== 1 && (
+        {/* don't show the arrow if the first page is immediately before */}
+        {page + 1 > 1 + 1 && (
           <>
-            <button className="btn btn-outline mx-1" onClick={() => setPage(0)}>
-              1
+            <button
+              className="btn btn-outline mx-1"
+              onClick={() => setPage(page - 1)}
+            >
+              ◀
             </button>
-            {/* don't show the arrow if the first page is immediately before */}
-            {page + 1 !== 2 && (
-              <>
-                <span>•••</span>
-                <button
-                  className="btn btn-outline mx-1"
-                  onClick={() => setPage(page - 1)}
-                >
-                  ◀
-                </button>
-              </>
-            )}
           </>
         )}
+        {page + 1 !== 1 && (
+          <button className="btn btn-outline mx-1" onClick={() => setPage(0)}>
+            1
+          </button>
+        )}
+        {page + 1 > 1 + 1 && <span>•••</span>}
         {/* current page */}
         <button className="btn btn-primary mx-1">{page + 1}</button>
+        {page < lastPage - 1 && <span>•••</span>}
         {/* go to last page or go forward one page*/}
         {page !== lastPage && (
           <>
-            {/* don't show the arrow if the last page is next */}
-            {page !== lastPage - 1 && (
-              <>
-                <button
-                  className="btn btn-outline mx-1"
-                  onClick={() => setPage(page + 1)}
-                >
-                  ▶
-                </button>
-                <span>•••</span>
-              </>
-            )}
             <button
               className="btn btn-outline mx-1"
               onClick={() => setPage(lastPage)}
             >
               {lastPage + 1}
+            </button>
+          </>
+        )}
+        {/* don't show the arrow if the last page is next */}
+        {page < lastPage - 1 && (
+          <>
+            <button
+              className="btn btn-outline mx-1"
+              onClick={() => setPage(page + 1)}
+            >
+              ▶
             </button>
           </>
         )}
