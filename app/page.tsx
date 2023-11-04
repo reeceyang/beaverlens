@@ -2,20 +2,21 @@
 
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDiscord, faGithub } from "@fortawesome/free-brands-svg-icons";
+import { faDiscord } from "@fortawesome/free-brands-svg-icons";
 import Link from "next/link";
 import { Confession, SearchRequest, SortOption } from "./types";
-import ConfessionCard from "../components/ConfessionCard";
+import ConfessionCard, { ConfessionCardWrapper } from "../components/ConfessionCard";
 import { useRouter } from "next/navigation";
 import { formatDistanceToNow } from "date-fns";
 import { BOT_INVITE } from "./constants";
+import Spinner from "../components/Spinner";
 
 export default function Home() {
   const router = useRouter()
 
   const [searchText, setSearchText] = useState("");
   const [results, setResults] = useState<Array<Confession>>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const HOME_NUM_RESULTS = "10";
 
@@ -66,13 +67,9 @@ export default function Home() {
                 }
               }}
               onChange={(event) => setSearchText(event.target.value)}
-              disabled={isLoading}
               autoFocus
             ></input>
-            <button
-              className={`btn btn-primary ${isLoading && "loading"} ml-2 mt-2`}
-              onClick={goSearch}
-            >
+            <button className={`btn btn-primary ml-2 mt-2`} onClick={goSearch}>
               Search
             </button>
           </div>
@@ -92,6 +89,16 @@ export default function Home() {
             <ConfessionCard confession={result} onHomePage={true} />
           </div>
         ))}
+        {isLoading &&
+          Array<JSX.Element>(Number(HOME_NUM_RESULTS)).fill(
+            <div className="carousel-item">
+              <ConfessionCardWrapper onHomePage>
+                <div className="w-full">
+                  Loading confession <Spinner />
+                </div>
+              </ConfessionCardWrapper>
+            </div>
+          )}
       </div>
       <div className="container max-w-5xl p-6">
         <div className="flex justify-center w-full py-2 gap-2">

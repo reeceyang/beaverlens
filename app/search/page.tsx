@@ -2,15 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { CONFESSIONS_PER_PAGE, Confession, SearchRequest, SearchResponse, SortOption } from "../types";
-import ConfessionCard from "../../components/ConfessionCard";
-
-const Spinner = () => <button className={`btn btn-ghost loading`} />;
+import ConfessionCard, { ConfessionCardWrapper } from "../../components/ConfessionCard";
+import Spinner from "../../components/Spinner";
 
 export default function Search() {
   const [searchText, setSearchText] = useState("");
   const [results, setResults] = useState<Array<Confession>>([]);
   const [totalNum, setTotalNum] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isFuzzy, setIsFuzzy] = useState(false);
   const [sortOption, setSortOption] = useState<SortOption>(SortOption.NONE);
   const [page, setPage] = useState(0);
@@ -108,21 +107,30 @@ export default function Search() {
             </div>
           </div>
           <div className="container min-h-screen py-6">
-            {isLoading && <Spinner />}
+            {isLoading && results.length === 0 && <p>Loading confessions <Spinner /> </p>}
             {results.length > 0 && (
               <p>
                 {totalNum} confession{totalNum > 1 && "s"} found
               </p>
             )}
-            {results.length > 0 ? (
-              results.map((result) => (
-                <div className="py-2" key={result._id}>
-                  <ConfessionCard confession={result} onHomePage={false} />
+            {results.length > 0
+              ? results.map((result) => (
+                  <div className="py-2" key={result._id}>
+                    <ConfessionCard confession={result} onHomePage={false} />
+                  </div>
+                ))
+              : !isLoading && <p>no confessions :( try a different search?</p>}
+            {results.length === 0 &&
+              isLoading &&
+              Array<JSX.Element>(Number(CONFESSIONS_PER_PAGE)).fill(
+                <div className="py-2 w-full">
+                  <ConfessionCardWrapper>
+                    <div className="w-full">
+                      Loading confession <Spinner />
+                    </div>
+                  </ConfessionCardWrapper>
                 </div>
-              ))
-            ) : (
-              <p>no confessions :( try a different search?</p>
-            )}
+              )}
           </div>
           <div className="m-auto w-fit py-2">
             {isLoading && <Spinner />}
@@ -135,7 +143,7 @@ export default function Search() {
           </div>
 
           {/* go to page 1 or go back one page*/}
-          <div className="m-auto w-fit py-2">
+          <div className="m-auto w-fit py-6">
             {/* don't show the arrow if the first page is immediately before */}
             {page + 1 > 1 + 1 && (
               <>
