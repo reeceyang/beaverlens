@@ -141,7 +141,7 @@ export default function Home() {
                 </a>
               </div>
               <div className="max-w-md py-6 ml-auto">
-                <div className="chat chat-start">
+                <div className="chat chat-end">
                   <div className="chat-image avatar">
                     <div className="bg-primary rounded-full p-1">
                       <FontAwesomeIcon
@@ -152,7 +152,15 @@ export default function Home() {
                   </div>
                   <div className="chat-bubble">/getconfess</div>
                 </div>
-                <div className="chat chat-end">
+                <div className="chat chat-start">
+                 <div className="chat-image avatar">
+                    <div className="bg-accent rounded-full p-1">
+                      <FontAwesomeIcon
+                        className="fa-xl translate-y-0.5"
+                        icon={faDiscord}
+                      />
+                    </div>
+                  </div>
                   <div className="chat-bubble">
                     <p>
                       <strong>#6969</strong> You should add the
@@ -161,14 +169,6 @@ export default function Home() {
                     <p className="link link-info break-words">
                       https://www.facebook.com/69696969696969
                     </p>
-                  </div>
-                  <div className="chat-image avatar">
-                    <div className="bg-accent rounded-full p-1">
-                      <FontAwesomeIcon
-                        className="fa-xl translate-y-0.5"
-                        icon={faDiscord}
-                      />
-                    </div>
                   </div>
                 </div>
               </div>
