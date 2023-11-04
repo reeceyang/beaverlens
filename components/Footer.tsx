@@ -39,6 +39,9 @@ export default function Footer() {
       </div>
       <div>
         <p>
+          The Beaver Lens website and Discord bot are not affiliated with the MIT Confessions Facebook page administrators.
+        </p>
+        <p>
           Made with 🧐 by{" "}
           <a className="link link-hover" href="https://www.reeceyang.xyz/">
             Reece
