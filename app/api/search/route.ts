@@ -133,5 +133,6 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(response);
   } catch (e) {
     console.error(e);
+    return NextResponse.error();
   }
 }

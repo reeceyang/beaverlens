@@ -1,7 +1,7 @@
 import { faGithub, faDiscord } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { BOT_INVITE, SERVER_INVITE } from "../app/page";
 import Link from "next/link";
+import { BOT_INVITE, SERVER_INVITE } from "../app/constants";
 
 export default function Footer() {
   return (

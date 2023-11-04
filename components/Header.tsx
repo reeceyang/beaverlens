@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
-import { BOT_INVITE } from "../app/page";
+import { BOT_INVITE } from "../app/constants";
 
 const Header = () => (
   <div className="navbar bg-base-100">
