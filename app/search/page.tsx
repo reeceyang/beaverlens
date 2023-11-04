@@ -12,7 +12,7 @@ export default function Search() {
   const [results, setResults] = useState<Array<Confession>>([]);
   const [totalNum, setTotalNum] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [isFuzzy, setIsFuzzy] = useState(true);
+  const [isFuzzy, setIsFuzzy] = useState(false);
   const [sortOption, setSortOption] = useState<SortOption>(SortOption.NONE);
   const [page, setPage] = useState(0);
   const lastPage = Math.ceil(totalNum / CONFESSIONS_PER_PAGE) - 1;

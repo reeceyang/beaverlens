@@ -1,27 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Confession, SearchRequest } from "./api/search/route";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDiscord, faGithub } from "@fortawesome/free-brands-svg-icons";
 import Link from "next/link";
 import { SortOption } from "./types";
 import ConfessionCard from "../components/ConfessionCard";
+import { useRouter } from "next/navigation";
 
 export const BOT_INVITE =
   "https://discord.com/api/oauth2/authorize?client_id=972229072128204861&permissions=2147485696&scope=bot";
 export const SERVER_INVITE = "https://discord.gg/8g3wqgKfmc";
 
 export default function Home() {
+  const router = useRouter()
+
   const [searchText, setSearchText] = useState("");
   const [results, setResults] = useState<Array<Confession>>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const HOME_NUM_RESULTS = "3";
+  const HOME_NUM_RESULTS = "10";
 
-  const updateResults = async () => {
+  const getRecentConfessions = async () => {
     const searchObj: SearchRequest = {
-      query: searchText,
+      query: "",
       num: HOME_NUM_RESULTS,
       sort: SortOption.NONE,
     };
@@ -37,6 +40,14 @@ export default function Home() {
       ).confessions
     );
   };
+
+  useEffect(() => {
+    getRecentConfessions();
+  }, [])
+
+  const goSearch = () => {
+    router.push("/search?" + new URLSearchParams({ query: searchText }))
+  }
 
   return (
     <>
@@ -54,9 +65,9 @@ export default function Home() {
             <input
               placeholder="Search for confessions"
               className="input input-primary"
-              onKeyUp={async (event) => {
+              onKeyUp={(event) => {
                 if (event.key === "Enter") {
-                  updateResults();
+                  goSearch();
                 }
               }}
               onChange={(event) => setSearchText(event.target.value)}
@@ -65,31 +76,40 @@ export default function Home() {
             ></input>
             <button
               className={`btn btn-primary ${isLoading && "loading"} ml-2 mt-2`}
-              onClick={updateResults}
+              onClick={goSearch}
             >
               Search
             </button>
-            <div className="container carousel space-x-4 py-6">
-              {results.map((result) => (
-                <div className="carousel-item" key={result._id}>
-                  <ConfessionCard confession={result} onHomePage={true} />
-                </div>
-              ))}
-            </div>
-            {results.length > 0 ? (
-              <Link
-                href={"/search?" + new URLSearchParams({ query: searchText })}
-              >
-                <button className="btn btn-secondary">See more</button>
-              </Link>
-            ) : (
-              <p>
-                <Link className="link link-hover" href="/search">
-                  Advanced Search
-                </Link>
-              </p>
-            )}
           </div>
+        </div>
+      </div>
+      <div className="container max-w-5xl p-6 flex flex-row">
+        <h1 className="text-5xl font-bold">Recent confessions</h1>
+        {results.length > 0 && (
+          <p className="mt-auto ml-auto">
+            Updated {new Date(results[0].time).toLocaleDateString()}
+          </p>
+        )}
+      </div>
+      <div className="carousel space-x-4 p-6 bg-base-200 w-screen">
+        {results.map((result) => (
+          <div className="carousel-item" key={result._id} id={result._id}>
+            <ConfessionCard confession={result} onHomePage={true} />
+          </div>
+        ))}
+      </div>
+      <div className="container max-w-5xl p-6">
+        <div className="flex justify-center w-full py-2 gap-2">
+          {results.map((result, i) => (
+            <a href={"#" + result._id} className="btn btn-xs btn-outline">
+              {i + 1}
+            </a>
+          ))}
+        </div>
+        <div className="text-center mt-4">
+          <Link href="/search">
+            <button className="btn btn-primary">See more</button>
+          </Link>
         </div>
       </div>
 
